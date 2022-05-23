@@ -1,0 +1,19 @@
+.person-card-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.person-card {
+  width: 50%;
+}
+
+.person-image {
+  height: 400px;
+  background-color: #ceefff;
+}
+
+.person-actions {
+  display: flex;
+  justify-content: space-between;
+}

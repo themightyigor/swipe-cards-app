@@ -1,0 +1,30 @@
+{
+  "recommendations": [
+    {
+      "name": "Carrie",
+      "id": 1,
+      "age": 21
+    },
+    {
+      "name": "Samantha",
+      "id": 2,
+      "age": 23
+    },
+    {
+      "name": "Charlotte",
+      "id": 3,
+      "age": 25
+    },
+    {
+      "name": "Miranda",
+      "id": 4,
+      "age": 27
+    }
+  ],
+  "matches": [
+    {
+      "id": 1,
+      "likedBy": [2, 3]
+    }
+  ]
+}
