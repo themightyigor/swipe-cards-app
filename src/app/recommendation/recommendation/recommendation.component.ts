@@ -40,7 +40,6 @@ export class RecommendationComponent implements OnInit {
       this.persons = persons;
       this.currentPerson = this.persons[this.currentId];
       this.personsTotalCount = totalCount;
-
       this.match = match;
     });
   }
@@ -63,6 +62,7 @@ export class RecommendationComponent implements OnInit {
 
     if (this.isLastPerson) {
       this.isLikeDisabled = true;
+
       return;
     }
 
