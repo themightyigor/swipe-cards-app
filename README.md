@@ -17,7 +17,9 @@ Open the browser access port: http://localhost:4200/
 ### Get Recommended Persons:
 
 **URI**: http://localhost:5000/recommendations
+
 **HTTP Method:** GET
+
 **Example request:**
 
 ```
@@ -56,11 +58,13 @@ curl -X GET \
 ### Get Matches:
 
 **URI**: http://localhost:5000/matches/{slug}
+
 **HTTP Method:** GET
+
 **Request parametres:**
-Parameter name | Type | Description
---- | --- | ---
-slug | number | Person ID
+| Parameter name | Type | Description |
+| -------------- | ------ | ----------- |
+| slug | number | Person ID |
 
 **Example request:**
 
