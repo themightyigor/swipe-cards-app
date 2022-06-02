@@ -59,7 +59,6 @@ export class RecommendationComponent implements OnInit {
     }
 
     this.isMatch = false;
-
     this.persons.forEach(
       (person, index) => (person.isVisible = index === currentIndex + 1)
     );
