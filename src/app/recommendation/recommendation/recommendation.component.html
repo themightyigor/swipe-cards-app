@@ -1,8 +1,11 @@
-<app-person-card
-  [isLikeDisabled]="isLikeDisabled"
-  [isMatch]="isMatch"
-  [isLastPerson]="isLastPerson"
-  [person]="currentPerson"
-  (like)="like()"
-  (swipe)="swipe()"
-></app-person-card>
+<div class="person-card-container">
+  <ng-container *ngFor="let person of persons; let index = index">
+    <app-person-card
+      *ngIf="person.isVisible"
+      [isMatch]="isMatch"
+      [person]="person"
+      (like)="like(index, person.id)"
+      (swipe)="swipe(index)"
+    ></app-person-card>
+  </ng-container>
+</div>

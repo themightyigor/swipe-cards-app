@@ -8,16 +8,11 @@ import { Person } from '../models/person.model';
   providedIn: 'root',
 })
 export class RecommendationService {
-  readonly API_URL = 'http://localhost:5000/recommendations?_limit=10';
+  readonly API_URL = 'http://localhost:5000/recommendations';
 
   constructor(private http: HttpClient) {}
 
   getAll() {
-    return this.http.get<Person[]>(this.API_URL, { observe: 'response' }).pipe(
-      map((response) => ({
-        persons: response.body,
-        totalCount: Number(response.headers.get('x-total-count')),
-      }))
-    );
+    return this.http.get<Person[]>(this.API_URL);
   }
 }

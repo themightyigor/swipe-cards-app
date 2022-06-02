@@ -7,13 +7,12 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { cold, getTestScheduler } from 'jasmine-marbles';
 
-import { RecommendationComponent } from './recommendation.component';
-import { PersonCardComponent } from '../person-card/person-card.component';
-
-import { RecommendationService } from 'src/app/services/recommendation.service';
 import { Match } from 'src/app/models/match.model';
-import { Person } from 'src/app/models/person.model';
 import { MatchService } from 'src/app/services/match.service';
+import { Person } from 'src/app/models/person.model';
+import { PersonCardComponent } from '../person-card/person-card.component';
+import { RecommendationComponent } from './recommendation.component';
+import { RecommendationService } from 'src/app/services/recommendation.service';
 
 describe('RecommendationComponent', () => {
   let component: RecommendationComponent;
@@ -21,6 +20,10 @@ describe('RecommendationComponent', () => {
   let element: DebugElement;
   let matchService: MatchService;
   let recommendationService: RecommendationService;
+
+  const getLikeButton = (): DebugElement => {
+    return element.query(By.css('[data-marker="like-button"]'));
+  };
 
   const matDialogSpyObj = jasmine.createSpyObj('MatDialog', ['open']);
 
@@ -33,21 +36,25 @@ describe('RecommendationComponent', () => {
       name: 'Carrie',
       id: 1,
       age: 21,
+      isVisible: false,
     },
     {
       name: 'Samantha',
       id: 2,
       age: 23,
+      isVisible: false,
     },
     {
       name: 'Charlotte',
       id: 3,
       age: 25,
+      isVisible: false,
     },
     {
       name: 'Miranda',
       id: 4,
       age: 27,
+      isVisible: false,
     },
   ];
 
@@ -87,7 +94,7 @@ describe('RecommendationComponent', () => {
     beforeEach(() => {
       spyOn(recommendationService, 'getAll').and.callFake(() =>
         cold('a|', {
-          a: { persons: mockPersons, totalCount: mockPersons.length },
+          a: { persons: mockPersons },
         })
       );
       spyOn(matchService, 'getOne').and.callFake(() =>
@@ -104,27 +111,24 @@ describe('RecommendationComponent', () => {
     it('should retrieve match', () => {
       expect(matchService.getOne).toHaveBeenCalled();
     });
-
-    it('should set appropriate number of persons', () => {
-      expect(component.personsTotalCount).toBe(mockPersons.length);
-    });
   });
 
   describe('when person receive like', () => {
-    let likeButton: HTMLButtonElement;
-
     beforeEach(() => {
-      component.currentPerson = mockPersons[0];
       component.persons = mockPersons;
-      component.personsTotalCount = mockPersons.length;
       component.match = mockMatch;
+    });
 
-      likeButton = element.query(
-        By.css('[data-marker="like-button"]')
-      ).nativeElement;
+    afterEach(() => {
+      component.persons = mockPersons;
     });
 
     it('should render the next person card, when no match', () => {
+      component.persons[0].isVisible = true;
+      fixture.detectChanges();
+
+      const likeButton = getLikeButton().nativeElement;
+
       likeButton.click();
       fixture.detectChanges();
 
@@ -136,7 +140,10 @@ describe('RecommendationComponent', () => {
     });
 
     it('should open dialog, when match', () => {
-      component.currentPerson = mockPersons[1];
+      component.persons[1].isVisible = true;
+      fixture.detectChanges();
+
+      const likeButton = getLikeButton().nativeElement;
 
       likeButton.click();
       fixture.detectChanges();
@@ -144,13 +151,20 @@ describe('RecommendationComponent', () => {
       expect(matDialogSpyObj.open).toHaveBeenCalled();
     });
 
-    it('should disable the like button, if last person is presented', () => {
-      component.isLastPerson = true;
+    it('should do nothing, when the last person is presented and user trying to proceed to the next card', () => {
+      component.persons[mockPersons.length - 1].isVisible = true;
+      fixture.detectChanges();
+
+      const likeButton = getLikeButton().nativeElement;
 
       likeButton.click();
       fixture.detectChanges();
 
-      expect(likeButton.hasAttribute('disabled')).toBeTruthy();
+      const personName = element
+        .query(By.css('[data-marker="person-name"]'))
+        .nativeElement.textContent.trim();
+
+      expect(personName).toBe('Miranda');
     });
   });
 });

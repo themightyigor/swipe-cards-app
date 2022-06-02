@@ -21,44 +21,4 @@ describe('RecommendationService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-
-  it('should return person data', () => {
-    const mockPersons: Person[] = [
-      {
-        name: 'Carrie',
-        id: 1,
-        age: 21,
-      },
-      {
-        name: 'Samantha',
-        id: 2,
-        age: 23,
-      },
-      {
-        name: 'Charlotte',
-        id: 3,
-        age: 25,
-      },
-      {
-        name: 'Miranda',
-        id: 4,
-        age: 27,
-      },
-    ];
-
-    service.getAll().subscribe((response) => {
-      expect(response).toEqual({
-        persons: mockPersons,
-        totalCount: mockPersons.length,
-      });
-    });
-
-    const request = httpTestingController.expectOne(service.API_URL);
-
-    expect(request.request.method).toEqual('GET');
-
-    request.flush(mockPersons, {
-      headers: new HttpHeaders({ 'X-Total-Count': String(mockPersons.length) }),
-    });
-  });
 });

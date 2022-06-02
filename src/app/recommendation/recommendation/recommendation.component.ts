@@ -14,14 +14,9 @@ import { RecommendationService } from 'src/app/services/recommendation.service';
   styleUrls: ['./recommendation.component.scss'],
 })
 export class RecommendationComponent implements OnInit {
-  public currentId = 0;
-  public currentPerson!: Person;
-  public isLastPerson = false;
-  public isLikeDisabled = false;
   public isMatch = false;
   public match!: Match;
   public persons!: Person[];
-  public personsTotalCount!: number;
 
   constructor(
     private recommendationService: RecommendationService,
@@ -33,13 +28,8 @@ export class RecommendationComponent implements OnInit {
     forkJoin([
       this.recommendationService.getAll(),
       this.matchService.getOne(),
-    ]).subscribe(([recommendations, match]) => {
-      const { persons, totalCount } = recommendations;
-
-      //@ts-ignore
+    ]).subscribe(([persons, match]) => {
       this.persons = persons;
-      this.currentPerson = this.persons[this.currentId];
-      this.personsTotalCount = totalCount;
       this.match = match;
     });
   }
@@ -51,8 +41,8 @@ export class RecommendationComponent implements OnInit {
     });
   }
 
-  like(): void {
-    this.isMatch = this.match.likedBy.includes(this.currentPerson.id);
+  like(currentIndex: number, id: number): void {
+    this.isMatch = this.match.likedBy.includes(id);
 
     if (this.isMatch) {
       this.openMatchDialog();
@@ -60,19 +50,18 @@ export class RecommendationComponent implements OnInit {
       return;
     }
 
-    if (this.isLastPerson) {
-      this.isLikeDisabled = true;
+    this.swipe(currentIndex);
+  }
 
+  swipe(currentIndex: number): void {
+    if (currentIndex === this.persons.length - 1) {
       return;
     }
 
-    this.swipe();
-  }
-
-  swipe(): void {
-    this.currentId++;
-    this.currentPerson = this.persons[this.currentId];
     this.isMatch = false;
-    this.isLastPerson = this.currentId === this.personsTotalCount - 1;
+
+    this.persons.forEach(
+      (person, index) => (person.isVisible = index === currentIndex + 1)
+    );
   }
 }

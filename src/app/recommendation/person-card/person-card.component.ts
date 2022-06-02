@@ -17,8 +17,6 @@ import { Person } from 'src/app/models/person.model';
 export class PersonCardComponent {
   @Input() person!: Person;
   @Input() isMatch!: boolean;
-  @Input() isLastPerson!: boolean;
-  @Input() isLikeDisabled!: boolean;
 
   @Output() like = new EventEmitter();
   @Output() swipe = new EventEmitter();

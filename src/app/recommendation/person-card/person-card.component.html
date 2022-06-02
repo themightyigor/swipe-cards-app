@@ -1,30 +1,21 @@
-<div class="person-card-container">
-  <mat-card class="person-card">
-    <mat-card-header>
-      <mat-card-title data-marker="person-name">{{
-        person?.name
-      }}</mat-card-title>
-      <mat-card-subtitle>{{ person?.age }}</mat-card-subtitle>
-    </mat-card-header>
-    <div class="person-image"></div>
-    <mat-card-actions class="person-actions">
-      <button
-        mat-button
-        color="primary"
-        data-marker="like-button"
-        [disabled]="isMatch || isLikeDisabled"
-        (click)="like.emit()"
-      >
-        Like
-      </button>
-      <button
-        mat-button
-        data-marker="dislike-button"
-        [disabled]="isLastPerson"
-        (click)="swipe.emit()"
-      >
-        {{ !isMatch ? "Dislike" : "Okay" }}
-      </button>
-    </mat-card-actions>
-  </mat-card>
-</div>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title data-marker="person-name">{{ person.name }}</mat-card-title>
+    <mat-card-subtitle>{{ person.age }}</mat-card-subtitle>
+  </mat-card-header>
+  <div class="person-image"></div>
+  <mat-card-actions class="person-actions">
+    <button
+      mat-button
+      color="primary"
+      data-marker="like-button"
+      [disabled]="isMatch"
+      (click)="like.emit()"
+    >
+      Like
+    </button>
+    <button mat-button (click)="swipe.emit()">
+      {{ !isMatch ? "Dislike" : "Okay" }}
+    </button>
+  </mat-card-actions>
+</mat-card>
